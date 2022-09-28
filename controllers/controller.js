@@ -14,8 +14,23 @@ function getUserItem() {
   .join("items_table", "user_table.id", "=", "user_id");
 }
 
+function createUser(username, passwordHash) {
+  return knex("user_table")
+    .insert({ username, passwordHash })
+    .then((data) => data);
+}
+
+function getPasswordHashForUser(username) {
+  return knex("user_table")
+    .where({ username })
+    .select(`passwordHash`)
+    .then((data) => data[0].passwordHash);
+}
+
 module.exports = {
     getAllUsers,
     getAllItems,
-    getUserItem
+    getUserItem,
+    createUser,
+    getPasswordHashForUser
 }
