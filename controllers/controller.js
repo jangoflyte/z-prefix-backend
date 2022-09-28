@@ -5,7 +5,11 @@ function getAllUsers() {
 }
 
 function getAllUsersById(id) {
-  return knex.select("*").from("user_table").where({ "user_table.id": id });
+  return knex
+    .select("*")
+    .from("user_table")
+    .where({ "user_table.id": id })
+    .orderBy("id", "asc");
 }
 
 function getAllItems() {
@@ -14,7 +18,11 @@ function getAllItems() {
 
 //select * from items_table where items_table.id=1;
 function getAllItemsById(id) {
-  return knex.select("*").from("items_table").where({ "items_table.id": id });
+  return knex
+    .select("*")
+    .from("items_table")
+    .where({ "items_table.id": id })
+    .orderBy("id", "asc");
 }
 
 //select * from user_table join items_table on user_table.id = user_id;
@@ -22,7 +30,8 @@ function getUserItem() {
   return knex
     .select("*")
     .from("user_table")
-    .join("items_table", "user_table.id", "=", "user_id");
+    .join("items_table", "user_table.id", "=", "user_id")
+    .orderBy("id", "asc");
 }
 
 //select * from user_table inner join items_table on user_table.id = user_id where user_table.id=1;
@@ -31,7 +40,8 @@ function getUserItemById(id) {
     .select("*")
     .from("user_table")
     .join("items_table", "user_table.id", "=", "user_id")
-    .where({ "user_table.id": id });
+    .where({ "user_table.id": id })
+    .orderBy("id", "asc");
 }
 
 function createUser(username, passwordHash) {
@@ -47,6 +57,18 @@ function getPasswordHashForUser(username) {
     .then((data) => data[0].passwordHash);
 }
 
+function createItem(item) {
+  return knex("items_table").insert(item);
+}
+
+function updateItem(item) {
+  return knex("items_table").where({ id: item.id }).update(movie);
+}
+
+function deleteItem(id) {
+  return knex("items_table").where({id:id}).del();
+}
+
 module.exports = {
   getAllUsers,
   getAllUsersById,
@@ -56,4 +78,7 @@ module.exports = {
   getUserItemById,
   createUser,
   getPasswordHashForUser,
+  createItem,
+  updateItem,
+  deleteItem
 };

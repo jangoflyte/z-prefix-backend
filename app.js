@@ -14,14 +14,17 @@ const saltRounds = 10;
 const { hash, compare } = bcrypt;
 
 const {
-    getAllUsers,
-    getAllUsersById,
-    getAllItems,
-    getAllItemsById,
-    getUserItem,
-    getUserItemById,
-    createUser,
-    getPasswordHashForUser
+  getAllUsers,
+  getAllUsersById,
+  getAllItems,
+  getAllItemsById,
+  getUserItem,
+  getUserItemById,
+  createUser,
+  getPasswordHashForUser,
+  createItem,
+  updateItem,
+  deleteItem,
 } = require("./controllers/controller");
 
 console.log(`NODE ENVIRONMENT PER HEROKU`, process.env.NODE_ENV);
@@ -73,13 +76,13 @@ app.get("/useritem/:id", (req, res) => {
 app.post("/create", (req, res) => {
   // make a new user account based on credentials coming in
   let { body } = req;
-  let { username, pass } = body;
+  let { username, password } = body;
 
   // hash the password
-  hash(pass, saltRounds)
+  hash(password, saltRounds)
     .then((hashedPass) => {
       // then insert the record into the DB and return a success message
-      console.log(`What the password actually is:`, pass);
+      console.log(`What the password actually is:`, password);
       console.log(`What gets stored in the DB:`, hashedPass);
       createUser(username, hashedPass)
         .then((data) => res.status(201).json("USER CREATED"))
@@ -91,15 +94,15 @@ app.post("/create", (req, res) => {
 app.post("/login", (req, res) => {
   // verify if a user has entered the right password for their existing account
   let { body } = req;
-  let { username, pass } = body;
+  let { username, password } = body;
 
   getPasswordHashForUser(username)
     .then((hashedPass) => {
       // check the entered pass against the hashed one using bcrypt
-      console.log(`What the user entered on login:`, pass);
+      console.log(`What the user entered on login:`, password);
       console.log(`What the db has stored for that user:`, hashedPass);
       // look up the hashed password for that user
-      compare(pass, hashedPass)
+      compare(password, hashedPass)
         // return a succeed or fail message, depending on the password being right
         .then((isMatch) => {
           if (isMatch) res.status(202).json("PASSWORDS MATCH");
@@ -108,6 +111,35 @@ app.post("/login", (req, res) => {
         .catch((err) => res.status(500).json(err));
     })
     .catch((err) => res.status(500).json("Unrecognized Username"));
+});
+
+app.post("/items", (req, res) => {
+  let item = req.body;
+  createItem(item)
+    .then(res.status(201).send({message: `Item ${req.body.item_name} created successfully`}))
+    .catch((err) => res.status(500).send(err));
+});
+
+app.patch("/items", (req, res) => {
+  let item = req.body;
+  updateItem(item)
+    .then(
+      res
+        .status(201)
+        .send({ message: `Item number ${req.body.id} updated successfully` })
+    )
+    .catch((err) => res.status(500).send(err));
+});
+
+app.delete("/items/:id", (req, res) => {
+  let {id} = req.params;
+  deleteItem(id)
+    .then(
+      res
+        .status(200)
+        .send({ message: `Item deleted successfully` })
+    )
+    .catch((err) => res.status(500).send(err));
 });
 
 app.get("*", (req, res) => {
