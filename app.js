@@ -15,6 +15,8 @@ const {
     getUserItem
 } = require("./controllers/controller");
 
+console.log(`NODE ENVIRONMENT PER HEROKU`, process.env.NODE_ENV);
+
 app.get('/', (req, res) => {
     //res.status(200).send("Welcome to the API");
     res.sendFile(path.join(__dirname, "/database.html"));
