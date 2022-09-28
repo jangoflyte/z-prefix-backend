@@ -31,7 +31,6 @@ function getUserItem() {
     .select("*")
     .from("user_table")
     .join("items_table", "user_table.id", "=", "user_id")
-    .orderBy("id", "asc");
 }
 
 //select * from user_table inner join items_table on user_table.id = user_id where user_table.id=1;
@@ -41,7 +40,6 @@ function getUserItemById(id) {
     .from("user_table")
     .join("items_table", "user_table.id", "=", "user_id")
     .where({ "user_table.id": id })
-    .orderBy("id", "asc");
 }
 
 function createUser(username, passwordHash) {
@@ -62,7 +60,7 @@ function createItem(item) {
 }
 
 function updateItem(item) {
-  return knex("items_table").where({ id: item.id }).update(movie);
+  return knex("items_table").where({ id: item.id }).update(item);
 }
 
 function deleteItem(id) {
