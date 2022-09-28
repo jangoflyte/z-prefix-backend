@@ -1,17 +1,37 @@
 const knex = require("./dbConnection");
 
 function getAllUsers() {
-    return knex.select('*').from('user_table')
+  return knex.select("*").from("user_table").orderBy("id", "asc");
+}
+
+function getAllUsersById(id) {
+  return knex.select("*").from("user_table").where({ "user_table.id": id });
 }
 
 function getAllItems() {
-  return knex.select("*").from("items_table");
+  return knex.select("*").from("items_table").orderBy("id", "asc");
+}
+
+//select * from items_table where items_table.id=1;
+function getAllItemsById(id) {
+  return knex.select("*").from("items_table").where({ "items_table.id": id });
 }
 
 //select * from user_table join items_table on user_table.id = user_id;
 function getUserItem() {
-  return knex.select("*").from("user_table")
-  .join("items_table", "user_table.id", "=", "user_id");
+  return knex
+    .select("*")
+    .from("user_table")
+    .join("items_table", "user_table.id", "=", "user_id");
+}
+
+//select * from user_table inner join items_table on user_table.id = user_id where user_table.id=1;
+function getUserItemById(id) {
+  return knex
+    .select("*")
+    .from("user_table")
+    .join("items_table", "user_table.id", "=", "user_id")
+    .where({ "user_table.id": id });
 }
 
 function createUser(username, passwordHash) {
@@ -28,9 +48,12 @@ function getPasswordHashForUser(username) {
 }
 
 module.exports = {
-    getAllUsers,
-    getAllItems,
-    getUserItem,
-    createUser,
-    getPasswordHashForUser
-}
+  getAllUsers,
+  getAllUsersById,
+  getAllItems,
+  getAllItemsById,
+  getUserItem,
+  getUserItemById,
+  createUser,
+  getPasswordHashForUser,
+};

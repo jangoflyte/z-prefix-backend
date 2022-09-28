@@ -15,8 +15,11 @@ const { hash, compare } = bcrypt;
 
 const {
     getAllUsers,
+    getAllUsersById,
     getAllItems,
+    getAllItemsById,
     getUserItem,
+    getUserItemById,
     createUser,
     getPasswordHashForUser
 } = require("./controllers/controller");
@@ -30,20 +33,41 @@ app.get('/', (req, res) => {
 
 app.get("/users", (req, res) => {
     getAllUsers()
-        .then((data) => res.json(data))
-        .catch((err) => res.send(err));
+        .then((data) => res.status(200).json(data))
+        .catch((err) => res.status(500).send(err));
+});
+
+app.get("/users/:id", (req, res) => {
+  let { id } = req.params;
+  getAllUsersById(id)
+    .then((data) => res.status(200).json(data))
+    .catch((err) => res.status(500).send(err));
 });
 
 app.get("/items", (req, res) => {
   getAllItems()
-    .then((data) => res.json(data))
-    .catch((err) => res.send(err));
+    .then((data) => res.status(200).json(data))
+    .catch((err) => res.status(500).send(err));
+});
+
+app.get("/items/:id", (req, res) => {
+  let { id } = req.params;
+  getAllItemsById(id)
+    .then((data) => res.status(200).json(data))
+    .catch((err) => res.status(500).send(err));
 });
 
 app.get("/useritem", (req, res) => {
   getUserItem()
-    .then((data) => res.json(data))
-    .catch((err) => res.send(err));
+    .then((data) => res.status(200).json(data))
+    .catch((err) => res.status(500).send(err));
+});
+
+app.get("/useritem/:id", (req, res) => {
+  let {id} = req.params;
+  getUserItemById(id)
+    .then((data) => res.status(200).json(data))
+    .catch((err) => res.status(500).send(err));
 });
 
 app.post("/create", (req, res) => {
