@@ -63,6 +63,14 @@ function updateItem(item) {
   return knex("items_table").where({ id: item.id }).update(item);
 }
 
+function updateItemByID(id, item) {
+  return knex("items_table").where({ id: id }).update(item);
+}
+
+function changeItem(id, item) {
+  return knex("items_table").where({ id: id }).update(item);
+}
+
 function deleteItem(id) {
   return knex("items_table").where({id:id}).del();
 }
@@ -78,5 +86,7 @@ module.exports = {
   getPasswordHashForUser,
   createItem,
   updateItem,
+  updateItemByID,
+  changeItem,
   deleteItem
 };

@@ -24,6 +24,7 @@ const {
   getPasswordHashForUser,
   createItem,
   updateItem,
+  updateItemByID,
   deleteItem,
 } = require("./controllers/controller");
 
@@ -123,6 +124,30 @@ app.post("/items", (req, res) => {
 app.patch("/items", (req, res) => {
   let item = req.body;
   updateItem(item)
+    .then(
+      res
+        .status(201)
+        .send({ message: `Item number ${req.body.id} updated successfully` })
+    )
+    .catch((err) => res.status(500).send(err));
+});
+
+app.patch("/items/:id", async (req, res) => {
+  let {id} = req.params;
+  let item = req.body;
+  updateItem(id, item)
+    .then(
+      res
+        .status(201)
+        .send({ message: `Item number ${req.body.id} updated successfully` })
+    )
+    .catch((err) => res.status(500).send(err));
+});
+
+app.put("/items/:id", (req, res) => {
+  let { id } = req.params;
+  let item = req.body;
+  changeItem(id, item)
     .then(
       res
         .status(201)
