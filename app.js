@@ -140,7 +140,7 @@ app.patch("/items/:id", async (req, res) => {
     .then(
       res
         .status(201)
-        .send({ message: `Item number ${req.body.id} updated successfully` })
+        .send({ message: `Item number ${id} updated successfully` })
     )
     .catch((err) => res.status(500).send(err));
 });
@@ -163,7 +163,7 @@ app.put("/items/:id", (req, res) => {
     .then(
       res
         .status(201)
-        .send({ message: `Item number ${req.body.id} updated successfully` })
+        .send({ message: `Item number ${id} updated successfully` })
     )
     .catch((err) => res.status(500).send(err));
 });
