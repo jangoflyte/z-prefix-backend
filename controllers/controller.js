@@ -59,6 +59,10 @@ function createItem(item) {
   return knex("items_table").insert(item);
 }
 
+function createItemByID(id, item) {
+  return knex("items_table").where({ id: id }).insert(item);
+}
+
 function updateItem(item) {
   return knex("items_table").where({ id: item.id }).update(item);
 }
@@ -93,5 +97,6 @@ module.exports = {
   updateItemByID,
   changeItem,
   changeItemByID,
-  deleteItem
+  deleteItem, 
+  createItemByID
 };

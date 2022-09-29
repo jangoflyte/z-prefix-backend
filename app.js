@@ -122,6 +122,18 @@ app.post("/items", (req, res) => {
     .catch((err) => res.status(500).send(err));
 });
 
+app.post("/items/:id", (req, res) => {
+  let { id } = req.params;
+  let item = req.body;
+  createItemByID(id, item)
+    .then(
+      res
+        .status(201)
+        .send({ message: `Item ${req.body.item_name} created successfully` })
+    )
+    .catch((err) => res.status(500).send(err));
+});
+
 app.patch("/items", (req, res) => {
   let item = req.body;
   updateItem(item)
