@@ -26,6 +26,7 @@ const {
   updateItem,
   updateItemByID,
   deleteItem,
+  changeItemByID,
 } = require("./controllers/controller");
 
 console.log(`NODE ENVIRONMENT PER HEROKU`, process.env.NODE_ENV);
@@ -135,7 +136,18 @@ app.patch("/items", (req, res) => {
 app.patch("/items/:id", async (req, res) => {
   let {id} = req.params;
   let item = req.body;
-  updateItem(id, item)
+  updateItemByID(id, item)
+    .then(
+      res
+        .status(201)
+        .send({ message: `Item number ${req.body.id} updated successfully` })
+    )
+    .catch((err) => res.status(500).send(err));
+});
+
+app.put("/items/", (req, res) => {
+  let item = req.body;
+  changeItem(item)
     .then(
       res
         .status(201)
@@ -147,7 +159,7 @@ app.patch("/items/:id", async (req, res) => {
 app.put("/items/:id", (req, res) => {
   let { id } = req.params;
   let item = req.body;
-  changeItem(id, item)
+  changeItemByID(id, item)
     .then(
       res
         .status(201)

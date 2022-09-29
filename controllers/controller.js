@@ -67,7 +67,11 @@ function updateItemByID(id, item) {
   return knex("items_table").where({ id: id }).update(item);
 }
 
-function changeItem(id, item) {
+function changeItem(item) {
+  return knex("items_table").where({ id: item.id }).update(item);
+}
+
+function changeItemByID(id, item) {
   return knex("items_table").where({ id: id }).update(item);
 }
 
@@ -88,5 +92,6 @@ module.exports = {
   updateItem,
   updateItemByID,
   changeItem,
+  changeItemByID,
   deleteItem
 };
