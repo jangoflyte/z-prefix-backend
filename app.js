@@ -27,7 +27,8 @@ const {
   updateItemByID,
   deleteItem,
   changeItemByID,
-  newUser
+  newUser,
+  loginUser,
 } = require("./controllers/controller");
 
 console.log(`NODE ENVIRONMENT PER HEROKU`, process.env.NODE_ENV);
@@ -87,6 +88,11 @@ app.post("/new", (req, res) => {
         .catch((err) => res.status(500).send(err));
     })
     .catch((err) => res.status(500).send(err));
+});
+
+app.post("/userlogin", (req, res) => {
+  let user = req.body;
+  loginUser(user)
 });
 
 app.post("/create", (req, res) => {

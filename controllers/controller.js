@@ -45,6 +45,13 @@ function getUserItemById(id) {
 function newUser(user) {
   return knex("user_table")
     .insert(user)
+    .then((data) => data)
+}
+
+//select * from user_table  where username='jbruck';
+function loginUser(user) {
+  return knex("user_table")
+    .where({username: user.username})
 }
 
 function createUser(first_name, last_name, username, passwordHash) {
@@ -104,5 +111,6 @@ module.exports = {
   changeItemByID,
   deleteItem, 
   createItemByID,
-  newUser
+  newUser,
+  loginUser
 };
