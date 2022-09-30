@@ -77,20 +77,20 @@ app.get("/useritem/:id", (req, res) => {
     .catch((err) => res.status(500).send(err));
 });
 
-app.post("/new", async (req, res) => {
-  let user = req.body;
-  hash(user.password, saltRounds)
-    .then((hashedPass) => {
-      console.log(`What the password actually is:`, user.password);
-      console.log(`What gets stored in the DB:`, hashedPass);
-      console.log(user.password.typeof())
-      console.log(hashedPass.typeof())
-      newUser(user)
-        .then((data) => res.status(201).json("new user"))
-        .catch((err) => res.status(500).send(err));
-    })
-    .catch((err) => res.status(500).send(err));
-});
+// app.post("/new", async (req, res) => {
+//   let user = req.body;
+//   hash(user.passwordHash, saltRounds)
+//     .then((hashedPass) => {
+//       console.log(`What the password actually is:`, user.passwordHash);
+//       console.log(`What gets stored in the DB:`, hashedPass);
+//       console.log(user.password.typeof());
+//       console.log(hashedPass.typeof());
+//       newUser(user)
+//         .then((data) => res.status(201).json("new user"))
+//         .catch((err) => res.status(500).send(err));
+//     })
+//     .catch((err) => res.status(500).send(err));
+// });
 
 app.post("/userlogin", (req, res) => {
   let user = req.body;
@@ -102,13 +102,13 @@ app.post("/userlogin", (req, res) => {
 app.post("/create", (req, res) => {
   // make a new user account based on credentials coming in
   let { body } = req;
-  let { first_name, last_name, username, password } = body; 
+  let { first_name, last_name, username, passwordHash } = body; 
 
   // hash the password
-  hash(password, saltRounds)
+  hash(passwordHash, saltRounds)
     .then((hashedPass) => {
       // then insert the record into the DB and return a success message
-      console.log(`What the password actually is:`, password);
+      console.log(`What the password actually is:`, passwordHash);
       console.log(`What gets stored in the DB:`, hashedPass);
       createUser(first_name, last_name, username, hashedPass)
         .then((data) => res.status(201).json("USER CREATED"))
