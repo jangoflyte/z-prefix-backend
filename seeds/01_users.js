@@ -10,13 +10,13 @@ exports.seed = async function(knex) {
       first_name: "john",
       last_name: "doe",
       username: "johndoe123",
-      password: "password",
+      passwordHash: "password",
     },
     {
       first_name: "jane",
       last_name: "doe",
       username: "janedoe456",
-      password: "dummy",
+      passwordHash: "dummy",
     },
   ]);
 };

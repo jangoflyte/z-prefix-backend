@@ -77,12 +77,14 @@ app.get("/useritem/:id", (req, res) => {
     .catch((err) => res.status(500).send(err));
 });
 
-app.post("/new", (req, res) => {
+app.post("/new", async (req, res) => {
   let user = req.body;
   hash(user.password, saltRounds)
     .then((hashedPass) => {
       console.log(`What the password actually is:`, user.password);
       console.log(`What gets stored in the DB:`, hashedPass);
+      console.log(user.password.typeof())
+      console.log(hashedPass.typeof())
       newUser(user)
         .then((data) => res.status(201).json("new user"))
         .catch((err) => res.status(500).send(err));
@@ -93,6 +95,8 @@ app.post("/new", (req, res) => {
 app.post("/userlogin", (req, res) => {
   let user = req.body;
   loginUser(user)
+    .then((data) => res.status(201).json(`user ID ${req.body.id} login successfully`))
+    .catch((err) => res.status(500).send(err));
 });
 
 app.post("/create", (req, res) => {

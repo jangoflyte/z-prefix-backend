@@ -45,7 +45,7 @@ function getUserItemById(id) {
 function newUser(user) {
   return knex("user_table")
     .insert(user)
-    .then((data) => data)
+    .then((data) => data);
 }
 
 //select * from user_table  where username='jbruck';
