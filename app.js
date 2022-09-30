@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(morgan("dev"));
 
-const saltRounds = 10; 
+const saltRounds = 12; 
 const { hash, compare } = bcrypt;
 
 const {
@@ -27,6 +27,7 @@ const {
   updateItemByID,
   deleteItem,
   changeItemByID,
+  newUser
 } = require("./controllers/controller");
 
 console.log(`NODE ENVIRONMENT PER HEROKU`, process.env.NODE_ENV);
@@ -75,10 +76,23 @@ app.get("/useritem/:id", (req, res) => {
     .catch((err) => res.status(500).send(err));
 });
 
+app.post("/new", (req, res) => {
+  let user = req.body;
+  hash(user.password, saltRounds)
+    .then((hashedPass) => {
+      console.log(`What the password actually is:`, user.password);
+      console.log(`What gets stored in the DB:`, hashedPass);
+      newUser(user)
+        .then((data) => res.status(201).json("new user"))
+        .catch((err) => res.status(500).send(err));
+    })
+    .catch((err) => res.status(500).send(err));
+});
+
 app.post("/create", (req, res) => {
   // make a new user account based on credentials coming in
   let { body } = req;
-  let { username, password } = body;
+  let { first_name, last_name, username, password } = body; 
 
   // hash the password
   hash(password, saltRounds)
@@ -86,7 +100,7 @@ app.post("/create", (req, res) => {
       // then insert the record into the DB and return a success message
       console.log(`What the password actually is:`, password);
       console.log(`What gets stored in the DB:`, hashedPass);
-      createUser(username, hashedPass)
+      createUser(first_name, last_name, username, hashedPass)
         .then((data) => res.status(201).json("USER CREATED"))
         .catch((err) => res.status(500).json(err));
     })

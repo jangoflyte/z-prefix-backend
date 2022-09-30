@@ -42,9 +42,14 @@ function getUserItemById(id) {
     .where({ "user_table.id": id })
 }
 
-function createUser(username, passwordHash) {
+function newUser(user) {
   return knex("user_table")
-    .insert({ username, passwordHash })
+    .insert(user)
+}
+
+function createUser(first_name, last_name, username, passwordHash) {
+  return knex("user_table")
+    .insert({ first_name, last_name, username, passwordHash })
     .then((data) => data);
 }
 
@@ -98,5 +103,6 @@ module.exports = {
   changeItem,
   changeItemByID,
   deleteItem, 
-  createItemByID
+  createItemByID,
+  newUser
 };
