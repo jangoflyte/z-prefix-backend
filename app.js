@@ -20,6 +20,7 @@ const {
   getAllItemsById,
   getUserItem,
   getUserItemById,
+  loginUser,
   createUser,
   getPasswordHashForUser,
   createItem,
@@ -27,8 +28,6 @@ const {
   updateItemByID,
   deleteItem,
   changeItemByID,
-  newUser,
-  loginUser,
 } = require("./controllers/controller");
 
 console.log(`NODE ENVIRONMENT PER HEROKU`, process.env.NODE_ENV);
@@ -120,12 +119,12 @@ app.post("/create", (req, res) => {
 app.post("/login", (req, res) => {
   // verify if a user has entered the right password for their existing account
   let { body } = req;
-  let { username, password } = body;
+  let { username, passwordHash } = body;
 
   getPasswordHashForUser(username)
     .then((hashedPass) => {
       // check the entered pass against the hashed one using bcrypt
-      console.log(`What the user entered on login:`, password);
+      console.log(`What the user entered on login:`, passwordHash);
       console.log(`What the db has stored for that user:`, hashedPass);
       // look up the hashed password for that user
       compare(password, hashedPass)

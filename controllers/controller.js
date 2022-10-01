@@ -42,16 +42,18 @@ function getUserItemById(id) {
     .where({ "user_table.id": id })
 }
 
-function newUser(user) {
-  return knex("user_table")
-    .insert(user)
-    .then((data) => data);
-}
+// function newUser(user) {
+//   return knex("user_table")
+//     .insert(user)
+//     .then((data) => data);
+// }
 
 //select * from user_table  where username='jbruck';
 function loginUser(user) {
   return knex("user_table")
     .where({username: user.username})
+    .select(`passwordHash`)
+    .then((data) => data);
 }
 
 function createUser(first_name, last_name, username, passwordHash) {
@@ -62,7 +64,7 @@ function createUser(first_name, last_name, username, passwordHash) {
 
 function getPasswordHashForUser(username) {
   return knex("user_table")
-    .where({ username })
+    .where({ username: username })
     .select(`passwordHash`)
     .then((data) => data[0].passwordHash);
 }
@@ -111,6 +113,5 @@ module.exports = {
   changeItemByID,
   deleteItem, 
   createItemByID,
-  newUser,
   loginUser
 };
