@@ -52,7 +52,7 @@ function getUserItemById(id) {
 function loginUser(user) {
   return knex("user_table")
     .where({username: user.username})
-    .select(`passwordHash`)
+    .select(user.id)
     .then((data) => data);
 }
 
@@ -64,7 +64,7 @@ function createUser(first_name, last_name, username, passwordHash) {
 
 function getPasswordHashForUser(username) {
   return knex("user_table")
-    .where({ username: username })
+    .where({ username})
     .select(`passwordHash`)
     .then((data) => data[0].passwordHash);
 }
